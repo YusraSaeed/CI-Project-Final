@@ -1,0 +1,58 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+.Python
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+*.wheel
+
+# Logs
+*.log
+*.out
+*.err
+
+# Test results
+.coverage
+*.coverage
+.hypothesis/
+.pytest_cache/
+.tox/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.*
+*.secret
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.bak
+*.swp
+*.swpx
+*.db.sqlite3
+
+#git
+.git/

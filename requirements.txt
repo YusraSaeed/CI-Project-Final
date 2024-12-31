@@ -1,0 +1,10 @@
+pymongo
+langchain
+OpenAI
+langchain_openai
+langchain_community
+langchain_chroma
+motor
+fastapi
+uvicorn
+gunicorn
