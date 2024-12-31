@@ -63,6 +63,7 @@ from fastapi import FastAPI, HTTPException, Cookie
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from mangum import Mangum
 from src.chatbot import bot
 import logging
 import uuid
@@ -123,3 +124,5 @@ async def root():
     Root endpoint to check API status.
     """
     return {"message": "Welcome to the chatbot API!"}
+
+handler = Mangum(app)
