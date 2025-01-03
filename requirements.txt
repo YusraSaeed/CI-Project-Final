@@ -2,9 +2,10 @@ pymongo
 langchain
 OpenAI
 langchain_openai
-langchain_community
+# langchain_community
 langchain_chroma
-motor
+# motor
 fastapi
 uvicorn
 gunicorn
+mangum

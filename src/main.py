@@ -75,6 +75,8 @@ logging.basicConfig(
 )
 app = FastAPI()
 
+handler = Mangum(app)
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -125,4 +127,3 @@ async def root():
     """
     return {"message": "Welcome to the chatbot API!"}
 
-handler = Mangum(app)
