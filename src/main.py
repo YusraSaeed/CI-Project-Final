@@ -1,70 +1,8 @@
-# from fastapi import FastAPI, HTTPException
-# from fastapi.responses import JSONResponse, StreamingResponse
-# from fastapi.middleware.cors import CORSMiddleware
-# from pydantic import BaseModel
-# from chatbot import bot 
-# import uuid
-# import logging
-
-# logging.basicConfig(
-#     filename="logs.log",  
-#     level=logging.INFO,  
-#     format="%(asctime)s - %(levelname)s - %(message)s"  
-# )
-
-# # Initialize FastAPI app
-# app = FastAPI()
-
-# # Add CORS middleware
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_methods=["*"],
-#     allow_headers=["*"]
-# )
-
-# class QueryInput(BaseModel):
-#     question: str
-#     stream: bool = False
-
-# def generate_session_id():
-#     return str(uuid.uuid4())
-
-# @app.post("/ask")
-# async def handle_question(input: QueryInput):
-#     """
-#     Handle user queries by interacting with the bot function.
-#     """
-#     try:
-#         session_id = generate_session_id()
-#         logging.info(f"Received question: {input.question} | Session ID: {session_id}")
-
-#         if input.stream:
-#             response = bot(input.question, session_id)
-#             logging.info(f"Streaming response initiated for session ID: {session_id}")
-#             return StreamingResponse(response)  
-#         else:
-#             response = bot(input.question, session_id)
-#             logging.info(f"Response generated for session ID: {session_id}")
-#             return JSONResponse(content={"response": response, "session_id": session_id})
-#     except Exception as e:
-#         logging.error(f"Error processing question: {input.question} | Error: {str(e)}")
-#         raise HTTPException(status_code=500, detail=str(e))
-
-# @app.get("/")
-# async def root():
-#     """
-#     Root endpoint to check API status.
-#     """
-#     logging.info("Root endpoint accessed")
-#     return {"message": "Welcome to the Laptop Suggestion Chatbot API!"}
-
 from fastapi import FastAPI, HTTPException, Cookie
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from mangum import Mangum
-from src.chatbot import bot
+from chatbot import bot
 import logging
 import uuid
 
@@ -75,14 +13,13 @@ logging.basicConfig(
 )
 app = FastAPI()
 
-handler = Mangum(app)
-
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 
 # Generate unique session ID
@@ -91,7 +28,7 @@ def generate_session_id():
 
 class QueryInput(BaseModel):
     question: str
-    stream: bool = False
+    stream: bool = True
 
 @app.post("/ask")
 async def handle_question(input: QueryInput, session_id: str = Cookie(default=None)):
@@ -126,4 +63,3 @@ async def root():
     Root endpoint to check API status.
     """
     return {"message": "Welcome to the chatbot API!"}
-

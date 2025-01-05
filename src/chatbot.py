@@ -1,8 +1,12 @@
-from src.embeddings import retrieve_chunks
-from src.chat_history import save_chat, fetch_chat
+from embeddings import retrieve_chunks
+from chat_history import save_chat, fetch_chat
+from langchain_openai import ChatOpenAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import asyncio
 
 load_dotenv("../.env")
 
@@ -71,7 +75,6 @@ def bot(question, user_id):
     save_chat(ai_chat)
 
     return response
-
 
 
 
@@ -166,4 +169,6 @@ def bot(question, user_id):
 #     save_chat(ai_chat)
 
 #     return response
+
+
 
