@@ -1,9 +1,14 @@
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
-
+import logging
 load_dotenv("../.env")
 
+logging.basicConfig(
+    filename="logs.log",  
+    level=logging.INFO,  
+    format="%(asctime)s - %(levelname)s - %(message)s"  
+)
 def store_chunks(chunks):
     embeddings = OpenAIEmbeddings(
         model='text-embedding-ada-002'
@@ -35,6 +40,7 @@ def retrieve_chunks(question, top_k=2):
 
     print("Retrieving documents...")
     relevant_docs = vectorstore.similarity_search(question, top_k)
-
+    print("Documents Retrieved")
     return relevant_docs
+    
 

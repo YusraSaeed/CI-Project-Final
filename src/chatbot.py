@@ -1,19 +1,20 @@
-from src.embeddings import retrieve_chunks
-from src.chat_history import save_chat, fetch_chat
-from langchain_openai import ChatOpenAI
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
+from embeddings import retrieve_chunks
+from chat_history import save_chat, fetch_chat
 from openai import OpenAI
 from dotenv import load_dotenv
-import os
+import os, logging
 import asyncio
 
 load_dotenv("../.env")
 
 
 PROMPT = """
-    You are a chatbot specializing in laptop recommendations based on user usecases and requirements. You need to give the response in a very structured format. Mention the name of the specs and its value properly. Use Pakistani Rupees PKR as the unit of price instead of INR. Keep the conversation engaging. Make the conversion as engaging as possible for instance if I user just tell you the use case without mentioning any specific brand or price range, ask the user about these things and other that can help you give better response in terms of laptop recommendation. And the laptops that you recommend must be from the ones stored in the chromadb database.You must response in the language that user has asked question in. If a user asks a question other than laptop recommendation just simply say "I'm sorry I can't respond to that. You can ask me about laptop recommendations."but if they ask whether you can respond in a particular language make sure to reply to them with a yes in that language."
+    You are a chatbot specializing in laptop recommendations based on user usecases and requirements. You need to give the response in a very structured format. Mention the name of the specs and its value properly. Use Pakistani Rupees PKR as the unit of price instead of INR. Keep the conversation engaging. Make the conversion as engaging as possible for instance if I user just tell you the use case without mentioning any specific brand or price range, ask the user about these things and other that can help you give better response in terms of laptop recommendation. And the laptops that you recommend must be from the ones stored in the chromadb database.You must response in the language that user has asked question in. If a user asks a question other than laptops just simply say "I'm sorry I can't respond to that. You can ask me about laptop recommendations." but if they ask whether you can respond in a particular language make sure to reply to them with a yes in that language. If a users asks you about a laptop that is in your database, you can give him the deatils of it and for which use case it will be best. However if a user asks about a certain laptop or brand that is not in your database you can reply "I don't have information about this particular model/brand in my database".
+    You will recommend laptops from here {data}
+    This is the question : {question}
+    
 """
+
 
 # Helper to call OpenAI
 def call_open_ai(messages):
@@ -75,3 +76,5 @@ def bot(question, user_id):
     save_chat(ai_chat)
 
     return response
+
+

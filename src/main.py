@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Cookie
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from src.chatbot import bot
+from chatbot import bot
 import logging
 import uuid
 
