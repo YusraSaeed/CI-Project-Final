@@ -95,7 +95,7 @@ This project is a **Laptop Recommendation System** that leverages AI and a struc
 
 6. Start the frontend server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## Usage
