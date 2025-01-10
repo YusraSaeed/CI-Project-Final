@@ -4,6 +4,10 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os, logging
 import asyncio
+from langchain_openai import OpenAIEmbeddings,ChatOpenAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 load_dotenv("../.env")
 
@@ -14,6 +18,7 @@ PROMPT = """
     This is the question : {question}
     
 """
+
 
 
 # Helper to call OpenAI

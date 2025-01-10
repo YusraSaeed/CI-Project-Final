@@ -3,6 +3,8 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chatbot import bot
+from chunking import create_chunks
+from embeddings import store_chunks
 import logging
 import uuid
 
@@ -13,6 +15,20 @@ logging.basicConfig(
 )
 app = FastAPI()
 
+# async def lifespan(app):
+#     try:
+#         logging.info("Starting ChromaDB initialization...")
+#         chunks = await create_chunks()  # Create chunks using MongoDB data
+#         store_chunks(chunks)           # Store chunks in ChromaDB
+#         logging.info("ChromaDB initialization completed successfully!")
+#     except Exception as e:
+#         logging.error(f"Error during ChromaDB initialization: {str(e)}")
+#         raise RuntimeError("ChromaDB initialization failed.")
+#     yield
+
+
+# app = FastAPI(lifespan=lifespan)
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -22,6 +38,7 @@ app.add_middleware(
     allow_credentials=True,
 )
 
+
 # Generate unique session ID
 def generate_session_id():
     return str(uuid.uuid4())
@@ -29,6 +46,7 @@ def generate_session_id():
 class QueryInput(BaseModel):
     question: str
     stream: bool = True
+
 
 @app.post("/ask")
 async def handle_question(input: QueryInput, session_id: str = Cookie(default=None)):
@@ -44,9 +62,12 @@ async def handle_question(input: QueryInput, session_id: str = Cookie(default=No
 
         if input.stream:
             response = bot(input.question, session_id)
+            # response = chain.stream({"question" : input.question, "session_id" : session_id})
             logging.info(f"Streaming response initiated for session ID: {session_id}")
             return StreamingResponse(response, headers={"Set-Cookie": f"session_id={session_id}; Path=/"})
         else:
+            # response = chain.invoke({"question" : input.question, "session_id" : session_id})
+
             response = bot(input.question, session_id)
             logging.info(f"Response generated for session ID: {session_id}")
             return JSONResponse(
