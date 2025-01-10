@@ -67,8 +67,8 @@ This project is a **Laptop Recommendation System** that leverages AI and a struc
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/YusraSaeed/CI-Project-Final.git
+   cd CI-Project-Final
    ```
 
 2. Install backend dependencies:
