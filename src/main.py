@@ -46,11 +46,9 @@ async def handle_question(input: QueryInput, session_id: str = Cookie(default=No
 
         if input.stream:
             response = bot(input.question, session_id)
-            # response = chain.stream({"question" : input.question, "session_id" : session_id})
             logging.info(f"Streaming response initiated for session ID: {session_id}")
             return StreamingResponse(response, headers={"Set-Cookie": f"session_id={session_id}; Path=/"})
         else:
-            # response = chain.invoke({"question" : input.question, "session_id" : session_id})
 
             response = bot(input.question, session_id)
             logging.info(f"Response generated for session ID: {session_id}")

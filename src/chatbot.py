@@ -14,8 +14,6 @@ PROMPT = """
 """
 
 
-
-# Helper to call OpenAI
 def call_open_ai(messages):
     client = OpenAI()
     response = client.chat.completions.create(
@@ -25,14 +23,12 @@ def call_open_ai(messages):
     )
     return response.choices[0].message.content
 
-# Step 1: Retrieve and format context
 def retrieve_context(question):
     docs = retrieve_chunks(question)
     text = [doc.page_content for doc in docs]
     combined_text = " ".join(text)
     return combined_text
 
-# Step 2: Prepare messages
 def prepare_messages(question, user_id, combined_text):
     history = fetch_chat(user_id)
     clean_history = [
@@ -47,15 +43,11 @@ def prepare_messages(question, user_id, combined_text):
     messages.append({"role": "user", "content": question})
     return messages
 
-# Step 3: Generate chatbot response
 def bot(question, user_id):
-    # Retrieve context
     combined_text = retrieve_context(question)
     
-    # Prepare messages
     messages = prepare_messages(question, user_id, combined_text)
 
-    # Save user input to chat history
     user_chat = {
         "user_id": user_id,
         "role": "user",
@@ -63,10 +55,8 @@ def bot(question, user_id):
     }
     save_chat(user_chat)
 
-    # Generate response
     response = call_open_ai(messages)
 
-    # Save chatbot response to chat history
     ai_chat = {
         "user_id": user_id,
         "role": "assistant",
