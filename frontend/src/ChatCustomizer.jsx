@@ -204,6 +204,11 @@ export default function ChatCustomizer() {
               key={index}
               className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
             >
+                {message.type === "user" ? (
+                  <User className="h-10 w-5 mr-2" />
+                ) : (
+                  <Robot className="h-16 w-5 mr-2" />
+                )}
               <div
                 className="rounded-lg p-3 max-w-[80%] text-white"
                 style={{
@@ -218,7 +223,7 @@ export default function ChatCustomizer() {
               </div>
             </div>
           ))}
-          {isTyping && <div className="text-gray-500 italic">Bot is typing...</div>}
+          {isTyping && <div className="text-gray-500 italic">Bot is thinking...</div>}
         </div>
 
         <div className="w-full flex items-center gap-2 px-4">
